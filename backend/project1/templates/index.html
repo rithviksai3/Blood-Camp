@@ -1,0 +1,132 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Donation</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            height:100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .table{
+        width:40%;
+        position: relative;
+        top: 100px;
+        left: 20%;
+        border:1px solid black;
+        border-radius: 10px;
+        background-color: aliceblue;
+        }
+        th,td{
+            border:1px solid black;
+        }
+        .logout input{
+        width:70px;
+        padding:0 5px;
+        height:40px;
+        font-size:16px;
+        color:aliceblue;
+        background-color:black;
+       }
+       .logout{
+        position: relative;
+        top:0%;
+        text-align:end;
+       }
+       .search{
+        top: 20%;
+        left: 70%;
+        position:absolute;
+       }
+       b form input{
+        width:200px;
+       }
+       .Message{
+          position:relative;
+       }
+       h1{
+        text-align: center;
+       }
+    </style>
+</head>
+<body style="background-image:url('{% static 'img/blood3.png' %}');">
+    <h1>BLOOD CAMP</h1>
+    <div class="logout">
+        <a href="logout"><input type="submit" value="Logout"/></a>
+    </div>
+    <div style="background: #444857;color:white"><toolbar>Enter Details</toolbar></div>
+    <div class="c1">
+        <div class="c2">
+            <div>
+                <b>
+                    <form autocomplete="off" action="" method="post">
+                        {% csrf_token %}
+                        <br>
+                        <input type="text" name="name" placeholder="enter name" required>
+                        <br>
+                        <input type="text" name="blood_group" placeholder="enter blood group" required>
+                        <br>
+                        <input type="text" name="mobile_no" maxlength="10" title="Error Message" pattern="[6-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" placeholder="enter mobile no" required>
+                        <br>
+                        <input type="text" name="address" placeholder="enter address" required><br>
+                        <input type="submit" value="Add data">
+                    </form>
+                </b>
+                <div class="Message">
+                    {% for message in messages %}
+                    <h2>{{message}}</h2>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="search">
+                <p><b>Search Blood Group You Want</b></p>
+                <input type="search" id="myinput" placeholder="search..." onkeyup="searchFun()">
+            </div>
+        </div>
+        <div class="c2">
+            <table class="table" id="mytable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Blood Group</th>
+                        <th>Mobile No</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                {% for instance in data %}
+                <tr>
+                    <td>{{instance.fields.name}}</td>
+                    <td>{{instance.fields.blood_group}}</td>
+                    <td>{{instance.fields.mobile_no}}</td>
+                    <td>{{instance.fields.address}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script>
+        const searchFun = () =>{
+            let filter = document.getElementById('myinput').value.toUpperCase();
+            let mytable=document.getElementById('mytable');
+            let tr=mytable.getElementsByTagName('tr');
+            for(var i=0; i<tr.length;i++){
+                let td = tr[i].getElementsByTagName('td')[1];
+                if(td){
+                    let textvalue=td.textContent || td.innerHTML;
+                    if(textvalue.toUpperCase().indexOf(filter) > -1){
+                        tr[i].style.display = "";
+                    }else{
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
